@@ -28,8 +28,7 @@
 *④：结合自定义中间件，可对已上传资源的访问、下载行为进行权限控制。*
 
 
-# 用法
-**安装**  
+#安装 
 
 0 在终端内切换到你的webman项目根目录，执行`composer require peinhu/aetherupload-webman ^1.0`   
   
@@ -37,23 +36,27 @@
 
 *提示：更改相关配置选项请编辑`config/plugin/peinhu/aetherupload-webman/app.php`。*  
 
-**基本用法**  
+#使用  
   
-文件上传：  
+**文件上传**  
+
 参考示例文件注释的部分，在需要上传大文件的页面引入相应文件和代码。可使用自定义中间件来对文件上传进行额外过滤，还可使用上传完成事件对上传的文件进一步处理。  
 
-分组配置：  
+**分组配置**  
+
 在配置文件的groups下新增分组，运行`php webman aetherupload:groups`自动创建对应目录。  
 
-自定义中间件：  
-参考文档路由中间件部分，创建你的中间件并将你编写的中间件名称填入配置文件对应部分，如`[app\middleware\MiddlewareA::class,app\middleware\MiddlewareB::class]`。  
+**自定义中间件**  
 
-上传完成事件：  
-分为上传完成前和上传完成后事件，参考文档常用组件Event事件部分，为`'aetherupload.before_upload_complete'`及`'aetherupload.upload_complete'`配置对应的事件处理类，在插件配置文件app.php中将相应选项设置为`true`。
+参考Webman文档路由中间件部分，创建你的中间件并将你编写的中间件名称填入配置文件对应部分，如`[app\middleware\MiddlewareA::class,app\middleware\MiddlewareB::class]`。  
+
+**上传完成事件**  
+
+分为上传完成前和上传完成后事件，参考Webman文档常用组件Event事件部分，为`'aetherupload.before_upload_complete'`及`'aetherupload.upload_complete'`配置对应的事件处理类，在插件配置文件app.php中将相应选项设置为`true`。
 
 **添加秒传功能（需Redis及浏览器支持）**
 
-参考文档Redis部分安装所需依赖。安装Redis并启动服务端。安装predis包`composer require predis/predis`，在`config/redis.php`中设置client为`'predis'`。
+参考Webman文档Redis部分安装所需依赖。安装Redis并启动服务端。安装predis包`composer require predis/predis`，在`config/redis.php`中设置client为`'predis'`。
 
 *提示：在Redis中维护了一份与实际资源文件对应的秒传清单，实际资源文件的增删造成的变化均需要同步到秒传清单中，否则会产生脏数据，扩展包已包含新增部分，当删除资源文件时，使用者需手动调用对应方法删除秒传清单中的记录。* 
 ```php
