@@ -40,7 +40,8 @@
   
 **文件上传**  
 
-参考示例文件注释的部分，在需要上传大文件的页面引入相应文件和代码。可使用自定义中间件来对文件上传进行额外过滤，还可使用上传完成事件对上传的文件进一步处理。  
+参考示例文件及注释部分，在需要上传大文件的页面引入相应文件和代码。
+可使用自定义中间件来对文件上传进行额外过滤，还可使用上传完成事件对上传的文件进一步处理。  
 
 **分组配置**  
 
@@ -52,11 +53,11 @@
 
 **上传完成事件**  
 
-分为上传完成前和上传完成后事件，参考Webman文档常用组件Event事件部分，为`'aetherupload.before_upload_complete'`及`'aetherupload.upload_complete'`配置对应的事件处理类，在插件配置文件app.php中将相应选项设置为`true`。
+分为上传完成前和上传完成后事件，参考Webman文档常用组件Event事件部分，为`'aetherupload.before_upload_complete'`及`'aetherupload.upload_complete'`配置对应的事件处理类，在本插件配置文件app.php中将`groups`下相应选项设置为`true`。
 
 **添加秒传功能（需Redis及浏览器支持）**
 
-参考Webman文档Redis部分安装所需依赖。安装Redis并启动服务端。安装predis包`composer require predis/predis`，在`config/redis.php`中设置client为`'predis'`。
+参考Webman文档Redis部分，安装所需依赖。安装Redis并启动服务。安装predis包`composer require predis/predis`，在`config/redis.php`中设置client为`'predis'`。
 
 *提示：在Redis中维护了一份与实际资源文件对应的秒传清单，实际资源文件的增删造成的变化均需要同步到秒传清单中，否则会产生脏数据，扩展包已包含新增部分，当删除资源文件时，使用者需手动调用对应方法删除秒传清单中的记录。* 
 ```php
