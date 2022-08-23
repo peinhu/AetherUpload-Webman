@@ -1,0 +1,35 @@
+{
+  "name": "peinhu/aetherupload-webman",
+  "type": "library",
+  "license": "GPL-2.0",
+  "authors": [
+    {
+      "name": "Payne Hu",
+      "email": "huyang110yahoo@gmail.com",
+      "role": "Manager"
+    }
+  ],
+  "keywords": [
+    "大文件",
+    "large",
+    "upload",
+    "webman"
+  ],
+  "description": "Webman plugin peinhu/aetherupload-webman",
+  "require": {
+      "webman/event":"^1.0",
+      "symfony/translation": "^5.4",
+      "webman/console": "^1.0"
+  },
+  "autoload": {
+    "psr-4": {
+      "AetherUpload\\": "src"
+    },
+    "files": [ "src/helpers.php" ]
+  },
+  "suggest": {
+    "predis/predis": "Needed to support instant completion"
+  },
+  "minimum-stability": "dev",
+  "prefer-stable": true
+}
