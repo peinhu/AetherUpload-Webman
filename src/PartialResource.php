@@ -122,7 +122,7 @@ class PartialResource
         }
 
         if ( file_exists($groupSubDir) === false ) {
-            if ( mkdir($groupSubDir) === false ) {
+            if ( mkdir($groupSubDir, 0755) === false ) {
                 return false;
             }
         }

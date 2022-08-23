@@ -11,7 +11,6 @@ class Install
     protected static $pathRelation = array (
       '../config' => 'config/plugin/peinhu/aetherupload-webman',
       '../assets' => 'public/vendor/aetherupload/js',
-      '../uploads' => 'storage/app/aetherupload',
       '../commands' => 'app/command',
       '../translations' => 'resource/translations/aetherupload',
     );
@@ -22,7 +21,8 @@ class Install
      */
     public static function install()
     {
-
+        mkdir(base_path()."/storage/app/aetherupload/file", 0755 ,true);
+        mkdir(base_path()."/storage/app/aetherupload/_header", 0755 ,true);
         static::installByRelation();
     }
 
