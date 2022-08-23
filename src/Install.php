@@ -9,13 +9,11 @@ class Install
      * @var array
      */
     protected static $pathRelation = array (
-      'config' => 'config/plugin/peinhu/aetherupload-webman',
-      'assets' => 'public/vendor/aetherupload/js',
-      'uploads' => 'storage/app/aetherupload',
-      'commands' => 'app/command',
-      'translations' => 'resource/translations/aetherupload',
-      //'middleware' => 'app/middleware',
-
+      '../config' => 'config/plugin/peinhu/aetherupload-webman',
+      '../assets' => 'public/vendor/aetherupload/js',
+      '../uploads' => 'storage/app/aetherupload',
+      '../commands' => 'app/command',
+      '../translations' => 'resource/translations/aetherupload',
     );
 
     /**
@@ -34,10 +32,6 @@ class Install
      */
     public static function uninstall()
     {
-        if (is_file(base_path()."/webman")) {
-            unlink(base_path() . "/webman");
-        }
-
         self::uninstallByRelation();
     }
 
@@ -66,14 +60,10 @@ class Install
     public static function uninstallByRelation()
     {
         foreach (static::$pathRelation as $source => $dest) {
-            $path = base_path()."/$dest";
-            if (!is_dir($path) && !is_file($path)) {
-                continue;
-            }
-            /*if (is_link($path) {
-                unlink($path);
+            /*if (is_link(base_path()."/$dest")) {
+                unlink(base_path()."/$dest");
             }*/
-            remove_dir($path);
+            remove_dir(base_path()."/$dest");
         }
     }
     
