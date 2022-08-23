@@ -28,7 +28,7 @@
 *④：结合自定义中间件，可对已上传资源的访问、下载行为进行权限控制。*
 
 
-#安装 
+# 安装 
 
 0 在终端内切换到你的webman项目根目录，执行`composer require peinhu/aetherupload-webman ^1.0`   
   
@@ -36,7 +36,7 @@
 
 *提示：更改相关配置选项请编辑`config/plugin/peinhu/aetherupload-webman/app.php`。*  
 
-#使用  
+# 使用  
   
 **文件上传**  
 
