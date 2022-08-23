@@ -1,5 +1,5 @@
 <?php
-namespace Webman\Console;
+namespace AetherUpload;
 
 class Install
 {
