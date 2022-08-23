@@ -29,7 +29,5 @@
   },
   "suggest": {
     "predis/predis": "Needed to support instant completion"
-  },
-  "minimum-stability": "dev",
-  "prefer-stable": true
+  }
 }
