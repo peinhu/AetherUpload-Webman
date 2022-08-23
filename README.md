@@ -39,13 +39,17 @@
 
 **基本用法**  
   
-文件上传：参考示例文件注释的部分，在需要上传大文件的页面引入相应文件和代码。可使用自定义中间件来对文件上传进行额外过滤，还可使用上传完成事件对上传的文件进一步处理。  
+文件上传：  
+参考示例文件注释的部分，在需要上传大文件的页面引入相应文件和代码。可使用自定义中间件来对文件上传进行额外过滤，还可使用上传完成事件对上传的文件进一步处理。  
 
-分组配置：在配置文件的groups下新增分组，运行`php webman aetherupload:groups`自动创建对应目录。  
+分组配置：  
+在配置文件的groups下新增分组，运行`php webman aetherupload:groups`自动创建对应目录。  
 
-自定义中间件：参考文档路由中间件部分，创建你的中间件并将你编写的中间件名称填入配置文件对应部分，如`[app\middleware\MiddlewareA::class,app\middleware\MiddlewareB::class]`。  
+自定义中间件：  
+参考文档路由中间件部分，创建你的中间件并将你编写的中间件名称填入配置文件对应部分，如`[app\middleware\MiddlewareA::class,app\middleware\MiddlewareB::class]`。  
 
-上传完成事件：分为上传完成前和上传完成后事件，参考文档常用组件Event事件部分，为`'aetherupload.before_upload_complete'`及`'aetherupload.upload_complete'`配置对应的事件处理类，在插件配置文件app.php中将相应选项设置为`true`。
+上传完成事件：  
+分为上传完成前和上传完成后事件，参考文档常用组件Event事件部分，为`'aetherupload.before_upload_complete'`及`'aetherupload.upload_complete'`配置对应的事件处理类，在插件配置文件app.php中将相应选项设置为`true`。
 
 **添加秒传功能（需Redis及浏览器支持）**
 
@@ -64,25 +68,25 @@
 `php webman aetherupload:clean 2` 清除2天前的无效临时文件  
 
 # 优化建议
-* （推荐）设置每天自动清除无效的临时文件。  
+* **（推荐）设置每天自动清除无效的临时文件**  
 由于上传流程存在意外终止的情况，如在传输过程中强行关闭页面或浏览器，将会导致已产生的文件部分成为无效文件，占据大量的存储空间，我们可以使用crontab的定时任务功能来定期清除它们。  
 在Linux中运行`crontab -e`命令，确保文件中包含这行代码：  
 ```php
 0 0 * * * php /项目根目录的绝对路径/webman aetherupload:clean 1> /dev/null 2>&1  
 ```  
 
-* 设置每天自动重建Redis中的秒传清单。  
+* **设置每天自动重建Redis中的秒传清单**  
 不恰当的处理和某些极端情况可能使秒传清单中出现脏数据，从而影响到秒传功能的准确性，重建秒传清单可消除脏数据，恢复与实际资源文件的同步。  
 在Linux中运行`crontab -e`命令，确保文件中包含这行代码：  
 ```php
 0 0 * * * php /项目根目录的绝对路径/webman aetherupload:build 1> /dev/null 2>&1  
 ```  
 
-* 提高分块临时文件读写速度（仅对PHP生效）。  
+* **提高分块临时文件读写速度（仅对PHP生效）**  
 利用Linux的tmpfs文件系统，来达到将上传的分块临时文件放到内存中快速读写的目的，通过以空间换时间，提升读写效率，将会**额外占用**部分内存（约1个分块大小）。  
 将php.ini中上传临时目录`upload_tmp_dir`项的值设置为`"/dev/shm"`，重启服务。  
 
-* 提高分块临时文件读写速度（对系统临时目录生效）。  
+* **提高分块临时文件读写速度（对系统临时目录生效）**  
 利用Linux的tmpfs文件系统，来达到将上传的分块临时文件放到内存中快速读写的目的，通过以空间换时间，提升读写效率，将会**额外占用**部分内存（约1个分块大小）。  
 执行以下命令：    
 `mkdir /dev/shm/tmp`  
