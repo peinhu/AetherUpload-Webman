@@ -21,8 +21,8 @@ class Install
      */
     public static function install()
     {
-        mkdir(base_path()."/storage/app/aetherupload/file", 0755 ,true);
-        mkdir(base_path()."/storage/app/aetherupload/_header", 0755 ,true);
+        @mkdir(base_path()."/storage/app/aetherupload/file", 0755 ,true);
+        @mkdir(base_path()."/storage/app/aetherupload/_header", 0755 ,true);
         static::installByRelation();
     }
 
