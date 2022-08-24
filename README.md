@@ -1,7 +1,7 @@
 # AetherUpload-Webman  
 
     
-本项目迁移自广受好评的Laravel大文件上传扩展包：[AetherUpload-Laravel](https://github.com/peinhu/AetherUpload-Laravel)
+本项目移植自广受好评的Laravel大文件上传扩展包：[AetherUpload-Laravel](https://github.com/peinhu/AetherUpload-Laravel)
 
 ![示例页面](http://wx2.sinaimg.cn/mw690/69e23056gy1fho6ymepjlg20go0aknar.gif) 
 
@@ -29,7 +29,6 @@
 
 
 # 安装 
-
 0 在终端内切换到你的webman项目根目录，执行`composer require peinhu/aetherupload-webman ^1.0`   
   
 1 在浏览器访问`http://域名/aetherupload`可到达示例页面  
@@ -37,33 +36,71 @@
 *提示：更改相关配置选项请编辑`config/plugin/peinhu/aetherupload-webman/app.php`。*  
 
 # 使用  
-  
 **文件上传**  
 
-参考示例文件及注释部分，在需要上传大文件的页面引入相应文件和代码。
-可使用自定义中间件来对文件上传进行额外过滤，还可使用上传完成事件对上传的文件进一步处理。  
+参考示例文件及注释，在需要上传大文件的页面引入相应文件及代码。
 
 **分组配置**  
 
-在配置文件的groups下新增分组，运行`php webman aetherupload:groups`自动创建对应目录。  
+在本插件配置文件的`groups`下新增分组，运行`php webman aetherupload:groups`自动创建对应目录。  
+```php
+'video' => [
+    'group_dir'                    => 'video',
+    'resource_maxsize'             => 0,
+    'resource_extensions'          => [],
+    'event_before_upload_complete' => false, 
+    'event_upload_complete'        => false,
+],
+```
+在前端通过调用`setGroup('分组名')`方法指定上传分组，注意分组名必须已经存在。
 
-**自定义中间件**  
+**添加秒传功能（需Redis及浏览器支持）**  
 
-参考Webman文档路由中间件部分，创建你的中间件并将你编写的中间件名称填入配置文件对应部分，如`[app\middleware\MiddlewareA::class,app\middleware\MiddlewareB::class]`。  
+参考Webman文档Redis部分，安装所需依赖。  
+安装Redis并启动服务。  
+安装predis包`composer require predis/predis`。  
+在`config/redis.php`中设置`client`为`predis`。  
+在本插件配置文件中将`instant_completion`设置为`true`。
 
-**上传完成事件**  
-
-分为上传完成前和上传完成后事件，参考Webman文档常用组件Event事件部分，为`'aetherupload.before_upload_complete'`及`'aetherupload.upload_complete'`配置对应的事件处理类，在本插件配置文件app.php中将`groups`下相应选项设置为`true`。
-
-**添加秒传功能（需Redis及浏览器支持）**
-
-参考Webman文档Redis部分，安装所需依赖。安装Redis并启动服务。安装predis包`composer require predis/predis`，在`config/redis.php`中设置client为`'predis'`。
-
-*提示：在Redis中维护了一份与实际资源文件对应的秒传清单，实际资源文件的增删造成的变化均需要同步到秒传清单中，否则会产生脏数据，扩展包已包含新增部分，当删除资源文件时，使用者需手动调用对应方法删除秒传清单中的记录。* 
+*提示：在Redis中维护了一份与实际资源文件对应的秒传清单，实际资源文件的增删造成的变化均需要同步到秒传清单中，否则会产生脏数据。  
+扩展包已包含新增部分，当需要删除资源文件时，使用者需手动调用对应方法删除文件及秒传清单中的记录。* 
 ```php
 \AetherUpload\Util::deleteResource($savedPath); //删除对应的资源文件
 \AetherUpload\Util::deleteRedisSavedPath($savedPath); //删除对应的Redis秒传记录
 ``` 
+
+**自定义中间件**  
+
+参考Webman文档路由中间件部分，创建你的中间件并将你编写的中间件名称填入配置文件对应部分。  
+```php
+'middleware_download' => [app\middleware\MiddlewareA::class,app\middleware\MiddlewareB::class],
+```  
+可使用此功能对文件进行上传、访问、下载行为的权限控制。
+
+**自定义路由**  
+
+在本插件配置文件下编辑`'route_uploading' => '/aetherupload/uploading'`等选项，在前端调用`setUploadingRoute('/aetherupload/uploading')`等方法。  
+文件访问、下载路由编辑后，可直接访问，无需调用前端方法。
+ 
+**上传完成事件**  
+
+分为上传完成前、上传完成后事件，参考Webman文档常用组件Event事件部分。  
+在`config/event.php`中为`aetherupload.before_upload_complete`及`aetherupload.upload_complete`配置对应的事件处理类。  
+在本插件配置文件中将`groups`下相应选项设置为`true`。 
+```php
+'event_before_upload_complete' => true, 
+'event_upload_complete'        => true,
+```
+可使用此功能在上传完成前、上传完成后进行额外处理。
+
+**宽松模式**  
+
+在本插件配置文件下编辑`'lax_mode' => true,`，在前端调用`setLaxMode(true)`方法。  
+通过上传前跳过计算hash，可缩短总耗时。此选项开启后，无法进行秒传和完整性校验。
+
+**多语言**  
+
+前端检测浏览器语言后自动设置，目前支持中、英。
   
 **使用方便的控制台命令**  
 
